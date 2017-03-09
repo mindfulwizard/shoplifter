@@ -78,7 +78,7 @@
 
     function reachedBottom() {
         const totalScrolled = document.body.scrollTop + window.innerHeight;
-        return totalScrolled >= (document.body.scrollHeight * .9);
+        return totalScrolled >= document.body.scrollHeight * .9;
     }
 
     function modalCtrl() {
