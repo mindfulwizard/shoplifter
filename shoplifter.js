@@ -51,7 +51,7 @@
         styleModal(outerDiv);
 
         function createButtons() {
-            function buttonMaker () {
+            function buttonMaker() {
                 const button = document.createElement('button');
                 button.style.margin = '5%';
                 button.className = 'primary-button';
@@ -88,9 +88,9 @@
 
     function modalCtrl() {
         if(!reachedBottom() || triggeredModal) {return;}
-        triggeredModal = true;
         const modal = createModal();
         document.body.appendChild(modal);
+        triggeredModal = true;
     }
 
     document.addEventListener('scroll', modalCtrl);
