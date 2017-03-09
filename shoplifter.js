@@ -5,7 +5,7 @@
         const numItems = document.querySelector('.mini-cart-container').getAttribute('data-quantity');
         const imageSources = Array.from(document.querySelectorAll('.mini-cart-image'))
             .map(el => el.firstElementChild.firstElementChild.src);
-
+        
         const outerDiv = document.createElement('div');
         const innerDiv = document.createElement('div');
         const imgDiv = document.createElement('div');
@@ -24,58 +24,55 @@
         });
         innerDiv.appendChild(imgDiv);
 
-        function styleModal(element) {
-            element.style.display = 'block';
-            element.style.zIndex = '1000';
-            element.style.height = '100%';
-            element.style.width = '100%';
-            element.style.position = 'fixed';
-            element.style.left = '0';
-            element.style.top = '0';
-            element.style.overflow = 'auto';
-            element.style.backgroundColor = 'rgba(0,0,0,0.7)';
+        function styleModal() {
+            outerDiv.style.display = 'none';
+            outerDiv.style.zIndex = '1000';
+            outerDiv.style.height = '100%';
+            outerDiv.style.width = '100%';
+            outerDiv.style.position = 'fixed';
+            outerDiv.style.left = '0';
+            outerDiv.style.top = '0';
+            outerDiv.style.overflow = 'auto';
+            outerDiv.style.backgroundColor = 'rgba(0,0,0,0.7)';
 
-            const content = element.firstChild;
-            content.style.backgroundColor = 'white';
-            content.style.margin = '10% auto';
-            content.style.width = '40%';
-            content.style.textAlign = 'center';
-            content.style.fontSize = '16px';
+            innerDiv.style.backgroundColor = 'white';
+            innerDiv.style.margin = '10% auto';
+            innerDiv.style.width = '40%';
+            innerDiv.style.textAlign = 'center';
+            innerDiv.style.fontSize = '16px';
 
-            const modalDivs = content.childNodes;
-            modalDivs[0].style.display = 'inline-block';
-            modalDivs[1].style.display = 'inline-block';
-            modalDivs.forEach(node => node.style.padding = '3%');
+            const contentDivs = innerDiv.childNodes;
+            contentDivs[0].style.display = 'inline-block';
+            contentDivs[1].style.display = 'inline-block';
+            contentDivs.forEach(el => el.style.padding = '3%');
         }
 
-        styleModal(outerDiv);
-
         function createButtons() {
-            function buttonMaker() {
+            function genericButtonMaker() {
                 const button = document.createElement('button');
                 button.style.margin = '5%';
                 button.className = 'primary-button';
                 return button;
             }
 
-            const redirectButton = buttonMaker();
+            const redirectButton = genericButtonMaker();
             redirectButton.innerHTML = 'Go to cart page';
             const cartPageLink = document.querySelector('.minicart-link').href;
             redirectButton.addEventListener('click', () => window.location.href = cartPageLink);
 
-            const dismissButton = buttonMaker();
+            const dismissButton = genericButtonMaker();
             dismissButton.innerHTML = 'Dismiss';
-            dismissButton.addEventListener('click', () => {
-                outerDiv.style.display = 'none';
-                triggeredModal = false;
-            });
+            dismissButton.addEventListener('click', () => outerDiv.style.display = 'none');
 
             return [redirectButton, dismissButton];
         }
 
+        styleModal();
         const buttons = createButtons();
         innerDiv.appendChild(buttons[0]);
         innerDiv.appendChild(buttons[1]);
+        document.body.appendChild(outerDiv);
+
         return outerDiv;
     }
 
@@ -83,15 +80,13 @@
         const totalScrolled = document.body.scrollTop + window.innerHeight;
         return totalScrolled >= (document.body.scrollHeight * .9);
     }
-    
-    let triggeredModal = false;
 
     function modalCtrl() {
-        if(!reachedBottom() || triggeredModal) {return;}
-        const modal = createModal();
-        document.body.appendChild(modal);
-        triggeredModal = true;
+        if(reachedBottom()) {
+            return modal.style.display = 'block';
+        }
     }
 
+    const modal = createModal();
     document.addEventListener('scroll', modalCtrl);
 })();
